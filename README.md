@@ -1,3 +1,7 @@
+# About this project
+- This is my first project using nest, I used to build my APIs with Express, but now I am trying to improve my backend skills.
+- I know that nest is better structured than express and has a lot of advantages.
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
