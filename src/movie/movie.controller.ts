@@ -8,44 +8,36 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { InputMovie, Movie } from './movie/movie.interface';
+import { MovieService } from './movie.service';
 
 @Controller('movie')
 export class MovieController {
-  private data = [
-    { id: 1, title: 'Iron Man', year: 2008 },
-    { id: 2, title: 'Thor', year: 2011 },
-    { id: 3, title: 'Captain America', year: 2011 },
-  ];
+  constructor(private readonly movieService: MovieService) {}
 
   @Get()
-  getAllMovies() {
-    return this.data;
+  getAllMovies(): Movie[] {
+    return this.movieService.getAllMovies();
   }
 
   @Get(':id')
-  getOneMovie(@Param('id') id: string) {
-    return this.data.find((movie) => movie.id === parseInt(id, 10));
+  getOneMovie(@Param('id') id: string): Movie {
+    return this.movieService.getOneMovie(parseInt(id, 10));
   }
 
   @Post()
-  createNewMovie(@Body() movie) {
-    const nextId = Math.max(...this.data.map((movie) => movie.id)) + 1;
-    movie.id = nextId;
-    this.data.push(movie);
-
-    return movie;
+  createNewMovie(@Body() movie: InputMovie) {
+    return this.movieService.createNewMovie(movie);
   }
 
   @Put(':id')
-  updateMovie(@Param('id') id: string, @Body() movie) {
-    const index = this.data.findIndex((movie) => movie.id === parseInt(id, 10));
-    this.data[index] = movie;
-    return movie;
+  updateMovie(@Param('id') id: string, @Body() movie: Movie): Movie {
+    return this.movieService.updateMovie(parseInt(id, 10), movie);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  removeMovie(@Param('id') id: string) {
-    this.data = this.data.filter((movie) => movie.id !== parseInt(id, 10));
+  removeMovie(@Param('id') id: string): void {
+    this.movieService.removeMovie(parseInt(id, 10));
   }
 }
