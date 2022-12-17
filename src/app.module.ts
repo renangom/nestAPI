@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Movie } from './movie/movie.entity/movie.entity';
 import { MovieModule } from './movie/movie.module';
 
 @Module({
@@ -14,7 +15,7 @@ import { MovieModule } from './movie/movie.module';
       username: 'root',
       password: 'topSecret',
       database: 'Movie',
-      entities: [],
+      entities: [Movie],
       synchronize: false,
     }),
   ],
