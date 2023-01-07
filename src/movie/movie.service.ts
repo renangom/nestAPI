@@ -1,37 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { InputMovie, Movie } from './movie/movie.interface';
+import { Delete, Get, Injectable, Post, Put } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, Repository } from 'typeorm';
+import { Movie } from './movie.entity/movie.entity';
+import { InputMovie } from './movie/movie.interface';
 
 @Injectable()
 export class MovieService {
-  private data = [
-    { id: 1, title: 'Iron Man', year: 2008 },
-    { id: 2, title: 'Thor', year: 2011 },
-    { id: 3, title: 'Captain America', year: 2011 },
-  ];
+  constructor(
+    @InjectRepository(Movie)
+    private movieRepository: Repository<Movie>,
+  ) {}
 
-  getAllMovies(): Movie[] {
-    return this.data;
+  getAllMovies(): Promise<Movie[]> {
+    return this.movieRepository.find();
   }
 
-  getOneMovie(id: number): Movie {
-    return this.data.find((movie) => movie.id === id);
+  getOneMovie(id: number): Promise<Movie> {
+    return this.movieRepository.findOne({ where: { id } });
   }
 
-  createNewMovie(movie: InputMovie) {
-    const nextId = Math.max(...this.data.map((movie) => movie.id)) + 1;
-    const newMovie: Movie = { ...movie, id: nextId };
-    this.data.push(newMovie);
-
-    return newMovie;
+  createNewMovie(movie: InputMovie): Promise<Movie> {
+    return this.movieRepository.save(movie);
   }
 
-  updateMovie(id: number, movie: Movie) {
-    const index = this.data.findIndex((movie) => movie.id === id);
-    this.data[index] = movie;
-    return movie;
+  updateMovie(id: number, movie: Movie): Promise<Movie> {
+    return this.movieRepository.save(movie);
   }
 
-  removeMovie(id: number): void {
-    this.data = this.data.filter((movie) => movie.id !== id);
+  removeMovie(id: number): Promise<DeleteResult> {
+    return this.movieRepository.delete(id);
   }
 }

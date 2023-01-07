@@ -8,20 +8,21 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { InputMovie, Movie } from './movie/movie.interface';
+import { InputMovie } from './movie/movie.interface';
 import { MovieService } from './movie.service';
+import { Movie } from './movie.entity/movie.entity';
 
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get()
-  getAllMovies(): Movie[] {
+  getAllMovies(): Promise<Movie[]> {
     return this.movieService.getAllMovies();
   }
 
   @Get(':id')
-  getOneMovie(@Param('id') id: string): Movie {
+  getOneMovie(@Param('id') id: string): Promise<Movie> {
     return this.movieService.getOneMovie(parseInt(id, 10));
   }
 
@@ -31,7 +32,7 @@ export class MovieController {
   }
 
   @Put(':id')
-  updateMovie(@Param('id') id: string, @Body() movie: Movie): Movie {
+  updateMovie(@Param('id') id: string, @Body() movie: Movie): Promise<Movie> {
     return this.movieService.updateMovie(parseInt(id, 10), movie);
   }
 
