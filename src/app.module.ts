@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Movie } from './movie/movie.entity/movie.entity';
 import { MovieModule } from './movie/movie.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MovieModule } from './movie/movie.module';
       entities: [Movie],
       synchronize: false,
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
