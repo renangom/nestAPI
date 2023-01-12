@@ -9,14 +9,13 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger/dist/decorators';
+import { JwtAuthGuard } from '../auth/jwt.guard/jwt.guard';
 import { InputMovie } from './movie/movie.interface';
 import { MovieService } from './movie.service';
 import { Movie } from './movie.entity/movie.entity';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger/dist/decorators';
-import { JwtAuthGuard } from 'src/auth/jwt.guard/jwt.guard';
 
 @ApiTags('movies')
-@UseGuards(JwtAuthGuard)
 @Controller('movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
